@@ -1,0 +1,80 @@
+1)mysql> select *
+    -> from film
+    -> where rating="PG-13";
+
+2)mysql> select *
+    -> from film natural join film_list
+    -> where film_id=FID and category="Horror"
+    -> order by rental_rate desc
+    -> limit 3;
++-------------------+-----------------------------------------------------------------------------------------------------------+--------+--------+---------+--------------+-------------+----------------------+-----------------+-------------+------------------+-----------------------------+---------------------+------+----------+-------+-----------------------------------------------------------------------------+
+| title             | description                                                                                               | length | rating | film_id | release_year | language_id | original_language_id | rental_duration | rental_rate | replacement_cost | special_features            | last_update         | FID  | category | price | actors                                                                      |
++-------------------+-----------------------------------------------------------------------------------------------------------+--------+--------+---------+--------------+-------------+----------------------+-----------------+-------------+------------------+-----------------------------+---------------------+------+----------+-------+-----------------------------------------------------------------------------+
+| TEMPLE ATTRACTION | A Action-Packed Saga of a Forensic Psychologist And a Woman who must Battle a Womanizer in Soviet Georgia |     71 | PG     |     881 |         2006 |           1 |                 NULL |               5 |        4.99 |            13.99 | Commentaries,Deleted Scenes | 2006-02-15 05:03:42 |  881 | Horror   |  4.99 | KENNETH PESCI, CHRISTOPHER WEST, MILLA PECK, JANE JACKMAN, GROUCHO DUNST    |
+| ACE GOLDFINGER    | A Astounding Epistle of a Database Administrator And a Explorer who must Find a Car in Ancient China      |     48 | G      |       2 |         2006 |           1 |                 NULL |               3 |        4.99 |            12.99 | Trailers,Deleted Scenes     | 2006-02-15 05:03:42 |    2 | Horror   |  4.99 | MINNIE ZELLWEGER, SEAN GUINESS, CHRIS DEPP, BOB FAWCETT                     |
+| ELEPHANT TROJAN   | A Beautiful Panorama of a Lumberjack And a Forensic Psychologist who must Overcome a Frisbee in A Baloon  |    126 | PG-13  |     277 |         2006 |           1 |                 NULL |               4 |        4.99 |            24.99 | Behind the Scenes           | 2006-02-15 05:03:42 |  277 | Horror   |  4.99 | CAMERON STREEP, GINA DEGENERES, VAL BOLGER, HARRISON BALE, PENELOPE GUINESS |
++-------------------+-----------------------------------------------------------------------------------------------------------+--------+--------+---------+--------------+-------------+----------------------+-----------------+-------------+------------------+-----------------------------+---------------------+------+----------+-------+-----------------------------------------------------------------------------+
+3 rows in set (0.02 sec)
+
+3)mysql> select distinct name,title,category,country
+    -> from customer_list,inventory,film_list
+    -> where SID=store_id and FID=film_id and category="Sports" and country="India";
++-------------------+---------------------------+----------+---------+
+| name              | title                     | category | country |
++-------------------+---------------------------+----------+---------+
+| ADAM GOOCH        | ALADDIN CALENDAR          | Sports   | India   |
+| SHERRI RHODES     | ALADDIN CALENDAR          | Sports   | India   |
+| ANNETTE OLSON     | ALADDIN CALENDAR          | Sports   | India   |
+| ARLENE HARVEY     | ALADDIN CALENDAR          | Sports   | India   |
+| CHRISTIAN JUNG    | ALADDIN CALENDAR          | Sports   | India   |
+| LUCY WHEELER      | ALADDIN CALENDAR          | Sports   | India   |
+| MARVIN YEE        | ALADDIN CALENDAR          | Sports   | India   |
+| CARLOS COUGHLIN   | ALADDIN CALENDAR          | Sports   | India   |
+.
+.
+.
+3443 rows
+
+4)
+mysql> SELECT
+    ->     *
+    -> FROM
+    ->     customer_list cl
+    -> WHERE
+    ->     cl.country = 'Canada'
+    ->         AND ID IN (SELECT
+    ->             r.customer_id
+    ->         FROM
+    ->             actor a,
+    ->             film_actor fa,
+    ->             inventory i,
+    ->             rental r
+    ->         WHERE
+    ->             a.first_name = 'NICK'
+    ->                 AND a.last_name = 'WAHLBERG'
+    ->                 AND a.actor_id = fa.actor_id
+    ->                 AND fa.film_id = i.film_id
+    ->                 AND i.inventory_id = r.inventory_id);
++-----+-------------------+--------------------+----------+--------------+---------+---------+--------+-----+
+| ID  | name              | address            | zip code | phone        | city    | country | notes  | SID |
++-----+-------------------+--------------------+----------+--------------+---------+---------+--------+-----+
+| 189 | LORETTA CARPENTER | 891 Novi Sad Manor | 5379     | 247646995453 | Oshawa  | Canada  | active |   1 |
+| 463 | DARRELL POWER     | 1844 Usak Avenue   | 84461    | 164414772677 | Halifax | Canada  | active |   2 |
++-----+-------------------+--------------------+----------+--------------+---------+---------+--------+-----+
+2 rows in set (0.38 sec)
+
+5)mysql> SELECT
+    ->     COUNT(DISTINCT fa.film_id)
+    -> FROM
+    ->     actor a,
+    ->     film_actor fa
+    -> WHERE
+    ->     a.first_name = 'SEAN'
+    ->         AND a.last_name = 'WILLIAMS'
+    ->         AND fa.actor_id = a.actor_id;
++----------------------------+
+| COUNT(DISTINCT fa.film_id) |
++----------------------------+
+|                         26 |
++----------------------------+
+1 row in set (0.15 sec)
