@@ -1,0 +1,480 @@
+mysql> create database assignment1
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use assignment1;
+Database changed
+
+
+
+mysql> CREATE TABLE Customer(custno VARCHAR(8) NOT NULL,
+    -> Custname VARCHAR(100) NOT NULL,
+    -> address VARCHAR(100) NOT NULL,
+    -> Internal CHAR(1) NOT NULL,
+    -> contact VARCHAR(100) NOT NULL,
+    -> phone INTEGER NOT NULL,
+    -> city VARCHAR(100) NOT NULL,
+    -> state CHAR(2) NOT NULL,
+    -> zip INTEGER NOT NULL,
+    -> CONSTRAINT CustomerTablePKcustno PRIMARY KEY(custno));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc Customer;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| custno   | varchar(8)   | NO   | PRI | NULL    |       |
+| Custname | varchar(100) | NO   |     | NULL    |       |
+| address  | varchar(100) | NO   |     | NULL    |       |
+| Internal | char(1)      | NO   |     | NULL    |       |
+| contact  | varchar(100) | NO   |     | NULL    |       |
+| phone    | int          | NO   |     | NULL    |       |
+| city     | varchar(100) | NO   |     | NULL    |       |
+| state    | char(2)      | NO   |     | NULL    |       |
+| zip      | int          | NO   |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> INSERT INTO Customer(custno, Custname, address, Internal, contact, phone, city, state, zip)
+    -> VALUES('C100', 'Football', 'Box 352200', 'Y', 'Mary Manager',   6857100, 'Boulder', 'CO', 80309);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO Customer(custno, Custname, address, Internal, contact, phone, city, state, zip)
+    -> VALUES('C101', 'Men"s Basketball', 'Box 352400', 'Y', 'Sally Supervisor', 5431700, 'Boulder', 'CO', 80309);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Customer(custno, Custname, address, Internal, contact, phone, city, state, zip)
+    -> VALUES('C103', 'Baseball', 'Box 352020', 'Y', 'Bill Baseball', 5431234, 'Boulder', 'CO', 80309);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Customer(custno, Custname, address, Internal, contact, phone, city, state, zip)
+    -> VALUES('C104', 'Women"s Softball', 'Box 351200', 'Y', 'Sue Softball', 5434321, 'Boulder', 'CO', 80309);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> INSERT INTO Customer(custno, Custname, address, Internal, contact, phone, city, state, zip)
+    -> VALUES('C105', 'High School Football', '123 Any Street', 'N', 'Coach Bob', 4441234, 'Louiville', 'CO', 80027);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *
+    -> from Customer;
++--------+----------------------+----------------+----------+------------------+---------+-----------+-------+-------+
+| custno | Custname             | address        | Internal | contact          | phone   | city      | state | zip   |
++--------+----------------------+----------------+----------+------------------+---------+-----------+-------+-------+
+| C100   | Football             | Box 352200     | Y        | Mary Manager     | 6857100 | Boulder   | CO    | 80309 |
+| C101   | Men"s Basketball     | Box 352400     | Y        | Sally Supervisor | 5431700 | Boulder   | CO    | 80309 |
+| C103   | Baseball             | Box 352020     | Y        | Bill Baseball    | 5431234 | Boulder   | CO    | 80309 |
+| C104   | Women"s Softball     | Box 351200     | Y        | Sue Softball     | 5434321 | Boulder   | CO    | 80309 |
+| C105   | High School Football | 123 Any Street | N        | Coach Bob        | 4441234 | Louiville | CO    | 80027 |
++--------+----------------------+----------------+----------+------------------+---------+-----------+-------+-------+
+5 rows in set (0.00 sec)
+
+
+
+mysql> CREATE TABLE Facility(facno VARCHAR(8) NOT NULL,
+    -> facname VARCHAR(100) NOT NULL,
+    -> CONSTRAINT PKFacilityfacno PRIMARY KEY(facno));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO Facility (facno, facname)
+    -> VALUES('F100', 'Football Stadium');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO Facility (facno, facname)
+    -> VALUES('F101', 'Basketball arena');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Facility (facno, facname)
+    -> VALUES('F102', 'Baseball field');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Facility (facno, facname)
+    -> VALUES('F103', 'Recreation room');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT *
+    -> FROM Facility;
++-------+------------------+
+| facno | facname          |
++-------+------------------+
+| F100  | Football Stadium |
+| F101  | Basketball arena |
+| F102  | Baseball field   |
+| F103  | Recreation room  |
++-------+------------------+
+4 rows in set (0.00 sec)
+
+
+
+mysql> CREATE TABLE Location(locno VARCHAR(8) NOT NULL,
+    -> locname VARCHAR(100) NOT NULL,
+    -> facno VARCHAR(8) NOT NULL,
+    -> CONSTRAINT PKLocationlocno PRIMARY KEY(locno),
+    -> CONSTRAINT FKFacilityfacno FOREIGN KEY (facno) REFERENCES Facility (facno));
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> INSERT INTO Location (locno, facno, locname)
+    -> VALUES('L100','F100', 'Locker room');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Location (locno, facno, locname)
+    -> VALUES('L101','F100', 'Plaza');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Location (locno, facno, locname)
+    -> VALUES('L102','F100', 'Vehicle gate');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Location (locno, facno, locname)
+    -> VALUES('L103','F101', 'Locker room');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Location (locno, facno, locname)
+    -> VALUES('L104','F100', 'Ticket Booth');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Location (locno, facno, locname)
+    -> VALUES('L105','F101', 'Gate');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Location (locno, facno, locname)
+    -> VALUES('L106','F100', 'Pedestrian gate');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT *
+    -> FROM Location;
++-------+-----------------+-------+
+| locno | locname         | facno |
++-------+-----------------+-------+
+| L100  | Locker room     | F100  |
+| L101  | Plaza           | F100  |
+| L102  | Vehicle gate    | F100  |
+| L103  | Locker room     | F101  |
+| L104  | Ticket Booth    | F100  |
+| L105  | Gate            | F101  |
+| L106  | Pedestrian gate | F100  |
++-------+-----------------+-------+
+
+
+
+mysql> CREATE TABLE Employee(empno VARCHAR(8) NOT NULL,
+    -> empname VARCHAR(100) NOT NULL,
+    -> department VARCHAR(100) NOT NULL,
+    -> email VARCHAR(100) NOT NULL,
+    -> phone VARCHAR(100) NOT NULL,
+    -> CONSTRAINT PKEmployeeempno PRIMARY KEY(empno));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO Employee(empno, empname, department, email, phone)
+    -> VALUES('E100', 'Chuck Coordinator', 'Administration', 'chuck@colorado.edu', '3-1111');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Employee(empno, empname, department, email, phone)
+    -> VALUES('E101', 'Mary Manager', 'Football', 'mary@colorado.edu', '5-1111');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Employee(empno, empname, department, email, phone)
+    -> VALUES('E102', 'Sally Supervisor', 'Planning', 'sally@colorado.edu', '3-2222');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Employee(empno, empname, department, email, phone)
+    -> VALUES('E103', 'Alan Administrator', 'Administration', 'alan@colorado.edu', '3-3333');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT *
+    -> FROM Employee;
++-------+--------------------+----------------+--------------------+--------+
+| empno | empname            | department     | email              | phone  |
++-------+--------------------+----------------+--------------------+--------+
+| E100  | Chuck Coordinator  | Administration | chuck@colorado.edu | 3-1111 |
+| E101  | Mary Manager       | Football       | mary@colorado.edu  | 5-1111 |
+| E102  | Sally Supervisor   | Planning       | sally@colorado.edu | 3-2222 |
+| E103  | Alan Administrator | Administration | alan@colorado.edu  | 3-3333 |
++-------+--------------------+----------------+--------------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Eventrequest(eventno VARCHAR(8) NOT NULL,
+    -> dateheld DATE NOT NULL,
+    -> datereq DATE NOT NULL,
+    -> facno VARCHAR(8) NOT NULL,
+    -> custno VARCHAR(8) NOT NULL,
+    -> Dateauth DATE,
+    -> status VARCHAR(8) NOT NULL,
+    -> estcost DECIMAL(9,2) NOT NULL,
+    -> estaudience INTEGER NOT NULL,
+    -> budno CHAR(5),
+    -> CONSTRAINT PKEventrequestEventno PRIMARY KEY(eventno),
+    -> CONSTRAINT FKEventrequestfacNo FOREIGN KEY(facno) REFERENCES Facility(facno),
+    -> CONSTRAINT FKEventrequestcustNo FOREIGN KEY(custno) REFERENCES Customer(custno));
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> CREATE VIEW EventReq AS
+    -> SELECT eventno, dateheld, datereq, facno, custno, Dateauth, status, estcost, estaudience, budno
+    -> FROM Eventrequest
+    -> WHERE status IN('Pending', 'Approved', 'Denied') AND estaudience>0
+    -> WITH CHECK OPTION;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO EventReq(eventno, dateheld, datereq, facno, custno, Dateauth, status, estcost, estaudience, budno)
+    -> VALUES('E100', str_to_date('25-OCT-2018','%d-%b-%Y'),  str_to_date('06-JUN-2018', '%d-%b-%Y'), 'F100', 'C100', str_to_date('08-JUN-2018', '%d-%b-%Y'), 'Approved', 5000.00, 80000, 'B1000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EventReq(eventno, dateheld, datereq, facno, custno, Dateauth, status, estcost, estaudience, budno)
+    -> VALUES('E101', str_to_date('26-OCT-2018', '%d-%b-%Y'), str_to_date('28-JUL-2018', '%d-%b-%Y'), 'F100', 'C100', str_to_date('', '%d-%b-%Y'), 'Pending', 5000.00, 80000, 'B1000'); 
+
+mysql> INSERT INTO EventReq(eventno, dateheld, datereq, facno, custno, Dateauth, status, estcost, estaudience, budno)
+    -> VALUES('E102', str_to_date('14-SEP-2018', '%d-%b-%Y'), str_to_date('28-JUL-2018', '%d-%b-%Y'), 'F100', 'C100', str_to_date('31-JUL-2018', '%d-%b-%Y'), 'Approved', 5000.00, 80000, 'B1000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EventReq(eventno, dateheld, datereq, facno, custno, Dateauth, status, estcost, estaudience, budno)
+    -> VALUES('E103', str_to_date('21-SEP-2018', '%d-%b-%Y'), str_to_date('28-JUL-2018', '%d-%b-%Y'), 'F100', 'C100', str_to_date('01-AUG-2018', '%d-%b-%Y'), 'Approved', 5000.00, 80000, 'B1000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EventReq(eventno, dateheld, datereq, facno, custno, Dateauth, status, estcost, estaudience, budno)
+    -> VALUES('E104', str_to_date('03-DEC-2018', '%d-%b-%Y'), str_to_date('28-JUL-2018', '%d-%b-%Y'), 'F101', 'C101', str_to_date('31-JUL-2018', '%d-%b-%Y'), 'Approved', 2000.00, 12000, 'B1000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EventReq(eventno, dateheld, datereq, facno, custno, Dateauth, status, estcost, estaudience, budno)
+    -> VALUES('E105', str_to_date('05-DEC-2018', '%d-%b-%Y'), str_to_date('28-JUL-2018', '%d-%b-%Y'), 'F101', 'C101', str_to_date('01-AUG-2018', '%d-%b-%Y'), 'Approved', 2000.00, 10000, 'B1000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EventReq(eventno, dateheld, datereq, facno, custno, Dateauth, status, estcost, estaudience, budno)
+    -> VALUES('E106', str_to_date('12-DEC-2018', '%d-%b-%Y'), str_to_date('28-JUL-2018', '%d-%b-%Y'), 'F101', 'C101', str_to_date('31-JUL-2018', '%d-%b-%Y'), 'Approved', 2000.00, 10000, 'B1000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EventReq(eventno, dateheld, datereq, facno, custno, Dateauth, status, estcost, estaudience, budno)
+    -> VALUES('E107', str_to_date('23-NOV-2018', '%d-%b-%Y'), str_to_date('28-JUL-2018', '%d-%b-%Y'), 'F100', 'C105', str_to_date('31-JUL-2018', '%d-%b-%Y'), 'Denied', 10000.00, 5000, '');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT *
+    -> FROM EventReq;
++---------+------------+------------+-------+--------+------------+----------+----------+-------------+-------+
+| eventno | dateheld   | datereq    | facno | custno | Dateauth   | status   | estcost  | estaudience | budno |
++---------+------------+------------+-------+--------+------------+----------+----------+-------------+-------+
+| E100    | 2018-10-25 | 2018-06-06 | F100  | C100   | 2018-06-08 | Approved |  5000.00 |       80000 | B1000 |
+| E102    | 2018-09-14 | 2018-07-28 | F100  | C100   | 2018-07-31 | Approved |  5000.00 |       80000 | B1000 |
+| E103    | 2018-09-21 | 2018-07-28 | F100  | C100   | 2018-08-01 | Approved |  5000.00 |       80000 | B1000 |
+| E104    | 2018-12-03 | 2018-07-28 | F101  | C101   | 2018-07-31 | Approved |  2000.00 |       12000 | B1000 |
+| E105    | 2018-12-05 | 2018-07-28 | F101  | C101   | 2018-08-01 | Approved |  2000.00 |       10000 | B1000 |
+| E106    | 2018-12-12 | 2018-07-28 | F101  | C101   | 2018-07-31 | Approved |  2000.00 |       10000 | B1000 |
+| E107    | 2018-11-23 | 2018-07-28 | F100  | C105   | 2018-07-31 | Denied   | 10000.00 |        5000 |       |
++---------+------------+------------+-------+--------+------------+----------+----------+-------------+-------+
+7 rows in set (0.00 sec)
+
+
+
+
+mysql> CREATE TABLE ResourceTbl(resno VARCHAR(8) NOT NULL,
+    -> Resname VARCHAR(100) NOT NULL,
+    -> rate DECIMAL(5, 2) NOT NULL,
+    -> CONSTRAINT PKResourceTblresno PRIMARY KEY(resno));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO ResourceTbl(resno, Resname, rate)
+    -> VALUES('R100', 'Attendant', '10.00');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ResourceTbl(resno, Resname, rate)
+    -> VALUES('R101', 'Police', '15.00');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ResourceTbl(resno, Resname, rate)
+    -> VALUES('R102', 'Usher', '10.00');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ResourceTbl(resno, Resname, rate)
+    -> VALUES('R103', 'Nurse', '20.00');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ResourceTbl(resno, Resname, rate)
+    -> VALUES('R104', 'Janitor', '15.00');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ResourceTbl(resno, Resname, rate)
+    -> VALUES('R105', 'food service', '10.00');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT *
+    -> FROM ResourceTbl;
++-------+--------------+-------+
+| resno | Resname      | rate  |
++-------+--------------+-------+
+| R100  | Attendant    | 10.00 |
+| R101  | Police       | 15.00 |
+| R102  | Usher        | 10.00 |
+| R103  | Nurse        | 20.00 |
+| R104  | Janitor      | 15.00 |
+| R105  | food service | 10.00 |
++-------+--------------+-------+
+6 rows in set (0.00 sec)
+
+
+
+mysql> CREATE TABLE EventPlan(planno VARCHAR(8) NOT NULL,
+    -> Eventno VARCHAR(8) NOT NULL,
+    -> workdate DATE NOT NULL,
+    -> Notes VARCHAR(100),
+    -> activity VARCHAR(100) NOT NULL,
+    -> empno VARCHAR(8),
+    -> CONSTRAINT PKEventPlanplanno PRIMARY KEY(planno),
+    -> CONSTRAINT FKEventPlanempno FOREIGN KEY(empno) REFERENCES Employee(empno),
+    -> CONSTRAINT FKEventPlanEventNo FOREIGN KEY(eventno) REFERENCES Eventrequest(eventno));
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> INSERT INTO EventPlan(planno, Eventno, workdate, Notes, activity, empno)
+    -> VALUES('P100', 'E100', str_to_date('25-Oct-2018', '%d-%b-%Y'), 'Standard operation', 'Operation', 'E102');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EventPlan(planno, Eventno, workdate, Notes, activity, empno)
+    -> VALUES('P101', 'E104', str_to_date('03-Dec-2018', '%d-%b-%Y'), 'Watch for gate crashers', 'Operation', 'E100');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EventPlan(planno, Eventno, workdate, Notes, activity, empno)
+    -> VALUES('P102', 'E105', str_to_date('05-Dec-2018', '%d-%b-%Y'), 'Standard operation', 'Operation', 'E102');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EventPlan(planno, Eventno, workdate, Notes, activity, empno)
+    -> VALUES('P103', 'E106', str_to_date('12-Dec-2018', '%d-%b-%Y'), 'Watch for seat switching', 'Operation', NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EventPlan(planno, Eventno, workdate, Notes, activity, empno)
+    -> VALUES('P104', 'E101', str_to_date('26-Oct-2018', '%d-%b-%Y'),'Standard cleanup', 'Cleanup', 'E101');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`assignment1`.`EventPlan`, CONSTRAINT `FKEventPlanEventNo` FOREIGN KEY (`Eventno`) REFERENCES `Eventrequest` (`eventno`))
+mysql> INSERT INTO EventPlan(planno, Eventno, workdate, Notes, activity, empno)
+    -> VALUES('P105', 'E100', str_to_date('25-Oct-2018', '%d-%b-%Y'), 'Light cleanup', 'Cleanup', 'E101');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EventPlan(planno, Eventno, workdate, Notes, activity, empno)
+    -> VALUES('P199', 'E102', str_to_date('10-Dec-2018', '%d-%b-%Y'), 'Standard operation', 'Operation', 'E101');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EventPlan(planno, Eventno, workdate, Notes, activity, empno)
+    -> VALUES('P299', 'E101', str_to_date('26-Oct-2018', '%d-%b-%Y'),'', 'Operation', 'E101');
+
+mysql> INSERT INTO EventPlan(planno, Eventno, workdate, Notes, activity, empno)
+    -> VALUES('P349', 'E106', str_to_date('12-Dec-2018', '%d-%b-%Y'),'', 'Cleanup', 'E101');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EventPlan(planno, Eventno, workdate, Notes, activity, empno)
+    -> VALUES('P85', 'E100', str_to_date('25-Oct-2018', '%d-%b-%Y'),'Standard operation', 'Setup', 'E102');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO EventPlan(planno, Eventno, workdate, Notes, activity, empno)
+    -> VALUES('P95', 'E101', str_to_date('26-Oct-2018', '%d-%b-%Y'),'Extra security', 'Setup', 'E102');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`assignment1`.`EventPlan`, CONSTRAINT `FKEventPlanEventNo` FOREIGN KEY (`Eventno`) REFERENCES `Eventrequest` (`eventno`))
+mysql> SELECT *
+    -> FROM EventPlan;
++--------+---------+------------+--------------------------+-----------+-------+
+| planno | Eventno | workdate   | Notes                    | activity  | empno |
++--------+---------+------------+--------------------------+-----------+-------+
+| P100   | E100    | 2018-10-25 | Standard operation       | Operation | E102  |
+| P101   | E104    | 2018-12-03 | Watch for gate crashers  | Operation | E100  |
+| P102   | E105    | 2018-12-05 | Standard operation       | Operation | E102  |
+| P103   | E106    | 2018-12-12 | Watch for seat switching | Operation | NULL  |
+| P105   | E100    | 2018-10-25 | Light cleanup            | Cleanup   | E101  |
+| P199   | E102    | 2018-12-10 | Standard operation       | Operation | E101  |
+| P349   | E106    | 2018-12-12 |                          | Cleanup   | E101  |
+| P85    | E100    | 2018-10-25 | Standard operation       | Setup     | E102  |
++--------+---------+------------+--------------------------+-----------+-------+
+8 rows in set (0.00 sec)
+
+mysql> CREATE TABLE EventPlanLine(planno VARCHAR(8) NOT NULL,
+    -> lineno INTEGER NOT NULL,
+    -> timestart TIME NOT NULL, 
+    -> timeend TIME NOT NULL, 
+    -> numberfld INTEGER NOT NULL,
+    -> locno VARCHAR(8) NOT NULL,
+    -> resno VARCHAR(8) NOT NULL,
+    -> CONSTRAINT PKEventPlanLineplannolineno PRIMARY KEY(planno, lineno),
+    -> CONSTRAINT FKEventPlanLineplanno FOREIGN KEY(planno) REFERENCES EventPlan(planno),
+    -> CONSTRAINT FKEventPlanLinelocno FOREIGN KEY(locno) REFERENCES Location(locno),
+    -> CONSTRAINT FKEventPlanLineresno FOREIGN KEY(resno) REFERENCES ResourceTbl(resno));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> CREATE VIEW eventplnline AS
+    -> SELECT planno, lineno, timestart, timeend, numberfld, locno, resno
+    -> FROM EventPlanLine
+    -> WHERE timeend>timestart
+    -> WITH CHECK OPTION;
+Query OK, 0 rows affected (0.02 sec)
+
+
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P100', '1','L100','R100','2013-10-25 8:00','2013-10-25 17:00','2');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P100', '2','L101','R101','2013-10-25 12:00','2013-10-25 17:00','2');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P100', '3','L102','R102','2013-10-25 7:00','2013-10-25 16:30','1');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P100', '4','L100','R102','2013-10-25 18:00','2013-12-12 22:00','1');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P101', '1','L103','R100','2013-12-03 18:00','2013-12-03 20:00','2');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P101', '2','L105','R100','2013-12-03 18:30','2013-12-03 19:00','2');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P101', '3','L103','R103','2013-12-03 19:00','2013-12-03 20:00','4');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P102', '1','L103','R100','2013-12-05 18:00','2013-12-05 19:00','2');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P102', '2','L105','R100','2013-12-05 18:00','2013-12-05 21:00','2');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P102', '3','L103','R103','2013-12-05 19:00','2013-12-05 22:00','4');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P103', '1','L103','R100','2013-12-12 18:00','2013-12-12 21:00','2');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P103', '2','L105','R100','2013-12-12 18:00','2013-12-12 21:00','4');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P103', '3','L103','R103','2013-12-12 19:00','2013-12-12 22:00','2');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P104', '1','L101','R104','2013-10-26 18:00','2013-10-26 22:00','4');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P104', '2','L100','R104','2013-10-26 18:00','2013-10-26 22:00','4');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P105', '1','L101','R104','2013-10-25 18:00','2013-10-25 22:00','4');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P105', '2','L100','R104','2013-10-25 18:00','2013-10-25 22:00','4');
+# #
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P199', '1','L100','R100','2013-12-10 8:00','2013-12-10 12:00','1');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P349', '1','L103','R100','2013-12-12 12:00','2013-12-12 15:30','1');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P85', '1','L100','R100','2013-10-25 9:00','2013-10-25 17:00','5');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P85', '2','L102','R101','2013-10-25 8:00','2013-10-25 17:00','2');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P85', '3','L104','R100','2013-10-25 10:00','2013-10-25 17:00','3');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P95', '1','L100','R100','2013-10-26 8:00','2013-10-26 17:00','4');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P95', '2','L102','R101','2013-10-26 9:00','2013-10-26 17:00','4');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P95', '3','L106','R100','2013-10-26 10:00','2013-10-26 15:00','4');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P95', '4','L100','R103','2013-10-26 13:00','2013-10-26 17:00','2');
+#
+INSERT INTO EventPlanLine(planNo, lineNo, locNo, resNo, timeStart, timeEnd, numberFLD) VALUES ('P95', '5','L101','R104','2013-10-26 13:00','2013-10-26 17:00','2');
+
+
+mysql> select * from EventPlanLine;
++--------+--------+-------+-------+---------------------+---------------------+-----------+
+| planNo | lineNo | locNo | resNo | timeStart           | timeEnd             | numberFLD |
++--------+--------+-------+-------+---------------------+---------------------+-----------+
+| P100   | 1      | L100  | R100  | 2013-10-25 08:00:00 | 2013-10-25 17:00:00 |         2 |
+| P100   | 2      | L101  | R101  | 2013-10-25 12:00:00 | 2013-10-25 17:00:00 |         2 |
+| P100   | 3      | L102  | R102  | 2013-10-25 07:00:00 | 2013-10-25 16:30:00 |         1 |
+| P100   | 4      | L100  | R102  | 2013-10-25 18:00:00 | 2013-12-12 22:00:00 |         1 |
+| P101   | 1      | L103  | R100  | 2013-12-03 18:00:00 | 2013-12-03 20:00:00 |         2 |
+| P101   | 2      | L105  | R100  | 2013-12-03 18:30:00 | 2013-12-03 19:00:00 |         2 |
+| P101   | 3      | L103  | R103  | 2013-12-03 19:00:00 | 2013-12-03 20:00:00 |         4 |
+| P102   | 1      | L103  | R100  | 2013-12-05 18:00:00 | 2013-12-05 19:00:00 |         2 |
+| P102   | 2      | L105  | R100  | 2013-12-05 18:00:00 | 2013-12-05 21:00:00 |         2 |
+| P102   | 3      | L103  | R103  | 2013-12-05 19:00:00 | 2013-12-05 22:00:00 |         4 |
+| P103   | 1      | L103  | R100  | 2013-12-12 18:00:00 | 2013-12-12 21:00:00 |         2 |
+| P103   | 2      | L105  | R100  | 2013-12-12 18:00:00 | 2013-12-12 21:00:00 |         4 |
+| P103   | 3      | L103  | R103  | 2013-12-12 19:00:00 | 2013-12-12 22:00:00 |         2 |
+| P105   | 1      | L101  | R104  | 2013-10-25 18:00:00 | 2013-10-25 22:00:00 |         4 |
+| P105   | 2      | L100  | R104  | 2013-10-25 18:00:00 | 2013-10-25 22:00:00 |         4 |
+| P199   | 1      | L100  | R100  | 2013-12-10 08:00:00 | 2013-12-10 12:00:00 |         1 |
+| P349   | 1      | L103  | R100  | 2013-12-12 12:00:00 | 2013-12-12 15:30:00 |         1 |
+| P85    | 1      | L100  | R100  | 2013-10-25 09:00:00 | 2013-10-25 17:00:00 |         5 |
+| P85    | 2      | L102  | R101  | 2013-10-25 08:00:00 | 2013-10-25 17:00:00 |         2 |
+| P85    | 3      | L104  | R100  | 2013-10-25 10:00:00 | 2013-10-25 17:00:00 |         3 |
++--------+--------+-------+-------+---------------------+---------------------+-----------+
