@@ -1,0 +1,95 @@
+1.List the city, state, and zip codes in the customer table.  Your result should not have duplicates. (Hint: The DISTINCT keyword eliminates duplicates.)
+
+mysql> SELECT DISTINCT
+    ->   c.city,
+    ->   c.state,
+    ->   c.zip
+    -> FROM Customer AS c ;
++-----------+-------+-------+
+| city      | state | zip   |
++-----------+-------+-------+
+| Boulder   | CO    | 80309 |
+| Louiville | CO    | 80027 |
++-----------+-------+-------+
+2 rows in set (0.00 sec)
+
+
+2.List the name, department, phone number, and email address of employees with a phone number beginning with “3-”.
+mysql> SELECT
+    ->   e.empName,
+    ->   e.department,
+    ->   e.phone,
+    ->   e.email
+    -> FROM Employee AS e
+    -> WHERE e.phone LIKE '3-%';
++--------------------+----------------+--------+--------------------+
+| empName            | department     | phone  | email              |
++--------------------+----------------+--------+--------------------+
+| Chuck Coordinator  | Administration | 3-1111 | chuck@colorado.edu |
+| Sally Supervisor   | Planning       | 3-2222 | sally@colorado.edu |
+| Alan Administrator | Administration | 3-3333 | alan@colorado.edu  |
++--------------------+----------------+--------+--------------------+
+3 rows in set (0.00 sec)
+
+
+3.List all columns of the resource table with a rate between $10 and $20. Sort the result by rate.
+mysql> select *
+    -> from ResourceTbl
+    -> where rate between 10 and 20
+    -> order by rate;
++-------+--------------+-------+
+| resno | Resname      | rate  |
++-------+--------------+-------+
+| R100  | Attendant    | 10.00 |
+| R102  | Usher        | 10.00 |
+| R105  | food service | 10.00 |
+| R101  | Police       | 15.00 |
+| R104  | Janitor      | 15.00 |
+| R103  | Nurse        | 20.00 |
++-------+--------------+-------+
+6 rows in set (0.00 sec)
+
+
+4.List the event requests with a status of “Approved” or “Denied” and an authorized date in July 2018. Include the event number, authorization date, and status in the output. (Hint: see the examples in Module 4 for date constants in Oracle and MySQL.)
+mysql> SELECT   er.eventno,   er.Dateauth,   er.status FROM Eventrequest AS er WHERE (er.status = 'Approved' OR er.status = 'Denied') AND er.Dateauth BETWEEN '2013-07-01' AND '2013-07-31';
+Empty set (0.00 sec)
+
+
+5.List the location number and name of locations that are part of the “Basketball arena”.  Your WHERE clause should not have a condition involving the facility number compared to a constant (“F101”). Instead, you should use a condition on the FacName column for the value of “Basketball arena”.
+
+mysql> SELECT
+    ->   l.locNo,
+    ->   l.locName
+    -> FROM Location AS l, Facility AS f
+    -> WHERE l.facNo = f.facNo AND f.facName = 'Basketball arena';
++-------+-------------+
+| locNo | locName     |
++-------+-------------+
+| L103  | Locker room |
+| L105  | Gate        |
++-------+-------------+
+2 rows in set (0.01 sec)
+
+
+6.For each event plan, list the plan number, count of the event plan lines, and sum of the number of resources assigned.  For example, plan number “P100” has 4 lines and 7 resources assigned.  You only need to consider event plans that have at least one line.
+
+mysql> SELECT
+    ->   ep.planNo,
+    ->   count(el.planNo),
+    ->   sum(el.numberFLD)
+    -> FROM EventPlan AS ep, EventPlanLine AS el
+    -> WHERE ep.planNo = el.planNo
+    -> GROUP BY ep.planNo;
++--------+------------------+-------------------+
+| planNo | count(el.planNo) | sum(el.numberFLD) |
++--------+------------------+-------------------+
+| P100   |                4 |                 6 |
+| P101   |                3 |                 8 |
+| P102   |                3 |                 8 |
+| P103   |                3 |                 8 |
+| P105   |                2 |                 8 |
+| P199   |                1 |                 1 |
+| P349   |                1 |                 1 |
+| P85    |                3 |                10 |
++--------+------------------+-------------------+
+8 rows in set (0.00 sec)
