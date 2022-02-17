@@ -1,0 +1,124 @@
+1. For event requests, list the event number, event date (eventrequest.dateheld), and count of the event plans.  Only include event requests in the result if the event request has more than one related event plan with a work date in December 2018.
+
+mysql> SELECT er.eventno, dateheld, COUNT(*) AS 'num_event_plans'
+    -> FROM Eventrequest as er, EventPlan as ep
+    -> WHERE er.eventno = ep.eventno
+    -> AND workdate BETWEEN '2018-12-01' AND '2018-12-31'
+    -> GROUP BY eventno
+    -> HAVING COUNT(*) > 1;
++---------+------------+-----------------+
+| eventno | dateheld   | num_event_plans |
++---------+------------+-----------------+
+| E106    | 2018-12-12 |               2 |
++---------+------------+-----------------+
+1 row in set (0.01 sec)
+
+
+
+2. List the plan number, event number, work date, and activity of event plans meeting the following two conditions: 
+(1) the work date is in December 2018 and 
+(2) the event is held in the “Basketball arena”.  Your query must not use the facility number (“F101”) of the basketball arena in the WHERE clause. Instead, you should use a condition on the FacName column for the value of “Basketball arena”.
+
+mysql> SELECT planno, ep.eventno, workdate, activity
+    -> FROM Facility f, Eventrequest er, EventPlan ep
+    -> WHERE f.facno = er.facno
+    -> AND er.eventno = ep.eventno
+    -> AND facname = 'Basketball arena'
+    -> AND workdate BETWEEN '2018-12-01' AND '2018-12-31';
++--------+---------+------------+-----------+
+| planno | eventno | workdate   | activity  |
++--------+---------+------------+-----------+
+| P101   | E104    | 2018-12-03 | Operation |
+| P102   | E105    | 2018-12-05 | Operation |
+| P103   | E106    | 2018-12-12 | Operation |
+| P349   | E106    | 2018-12-12 | Cleanup   |
++--------+---------+------------+-----------+
+4 rows in set (0.00 sec)
+
+
+3. List the event number, event date, status, and estimated cost of events where there is an event plan managed by Mary Manager and the event is held in the basketball arena in the period October 1 to December 31, 2018.  Your query must not use the facility number (“F101”) of the basketball arena or the employee number (“E101”) of “Mary Manager” in the WHERE clause. Thus, the WHERE clause should not have conditions involving the facility number or employee number compared to constant values.
+
+
+mysql> SELECT er.eventno, dateheld, status, estcost
+    -> FROM Eventrequest er, Facility f, EventPlan ep, Employee e
+    -> WHERE er.facno = f.facno
+    -> AND er.eventno = ep.eventno
+    -> AND ep.empno = e.empno
+    -> AND facname = 'Basketball arena'
+    -> AND empname = 'Mary Manager'
+    -> AND dateheld BETWEEN '2018-10-01' AND '2018-12-31';
++---------+------------+----------+---------+
+| eventno | dateheld   | status   | estcost |
++---------+------------+----------+---------+
+| E106    | 2018-12-12 | Approved | 2000.00 |
++---------+------------+----------+---------+
+1 row in set (0.00 sec)
+
+
+4. List the plan number, line number, resource name, number of resources (eventplanline.number), location name, time start, and time end where the event is held at the basketball arena, the event plan has activity of activity of “Operation”, and the event plan has a work date in the period October 1 to December 31, 2018.  Your query must not use the facility number (“F101”) of the basketball arena in the WHERE clause. Instead, you should use a condition on the FacName column for the value of “Basketball arena”.
+
+
+mysql> SELECT epl.planno, lineno, Resname, numberfld, locname, timestart, timeend
+    -> FROM eventplnline epl, EventPlan ep, ResourceTbl r, Location l, Facility f
+    -> WHERE epl.planno = ep.planno
+    -> AND epl.resno = r.resno
+    -> AND epl.locno = l.locno
+    -> AND l.facno = f.facno
+    -> AND facname = 'Basketball arena'
+    -> AND activity = 'Operation'
+    -> AND workdate BETWEEN '2018-10-01' AND '2018-12-31';
+
++--------+--------+-----------+-----------+-------------+---------------------+---------------------+
+| planno | lineno | Resname   | numberfld | locname     | timestart           | timeend             |
++--------+--------+-----------+-----------+-------------+---------------------+---------------------+
+| P101   | 1      | Attendant |         2 | Locker room | 2013-12-03 18:00:00 | 2013-12-03 20:00:00 |
+| P101   | 2      | Attendant |         2 | Gate        | 2013-12-03 18:30:00 | 2013-12-03 19:00:00 |
+| P101   | 3      | Nurse     |         4 | Locker room | 2013-12-03 19:00:00 | 2013-12-03 20:00:00 |
+| P102   | 1      | Attendant |         2 | Locker room | 2013-12-05 18:00:00 | 2013-12-05 19:00:00 |
+| P102   | 2      | Attendant |         2 | Gate        | 2013-12-05 18:00:00 | 2013-12-05 21:00:00 |
+| P102   | 3      | Nurse     |         4 | Locker room | 2013-12-05 19:00:00 | 2013-12-05 22:00:00 |
+| P103   | 1      | Attendant |         2 | Locker room | 2013-12-12 18:00:00 | 2013-12-12 21:00:00 |
+| P103   | 2      | Attendant |         4 | Gate        | 2013-12-12 18:00:00 | 2013-12-12 21:00:00 |
+| P103   | 3      | Nurse     |         2 | Locker room | 2013-12-12 19:00:00 | 2013-12-12 22:00:00 |
++--------+--------+-----------+-----------+-------------+---------------------+---------------------+
+9 rows in set (0.00 sec)
+
+
+
+1. Insert a new row into the Facility table with facility name “Swimming Pool”.
+
+mysql> INSERT INTO Facility (facno, facname) VALUES ('F104', 'Swimming Pool');
+Query OK, 1 row affected (0.01 sec)
+
+2. Insert a new row in the Location table related to the Facility row in modification problem 1. The new row should have “Door” for the location name.
+
+mysql> INSERT INTO Location (locno, facno, locname) VALUES ('L107', 'F104', 'Door');
+Query OK, 1 row affected (0.06 sec)
+
+3. Insert a new row in the Location table related to the Facility row in modification problem 1. The new row should have “Locker Room” for the location name.
+
+mysql> INSERT INTO Location (locno, facno, locname) VALUES ('L108', 'F104', 'Locker Room');
+Query OK, 1 row affected (0.01 sec)
+
+4. Change the location name of “Door” to “Gate” for the row inserted in modification problem 2.
+
+mysql> UPDATE Location
+    -> SET locname = 'Gate'
+    -> WHERE locno = 'L107';
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+5. Delete the row inserted in modification problem 3.
+
+mysql> DELETE FROM Location
+    -> WHERE locno = 'L108';
+Query OK, 1 row affected (0.02 sec)
+
+
+
+
+
+
+
+
+
