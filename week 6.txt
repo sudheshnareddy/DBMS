@@ -1,0 +1,107 @@
+1. For the ERD in Figure 1, you should indicate the applications of the entity type rule. For each entity type rule application, you should identify the table name, primary key, and other columns. You do not need to write CREATE TABLE statements.
+
+Student(StdNo, StdName, StdAddress, StdCity, StdState, StdZip, StdEmail)
+
+Table Name: Student
+Primary Key: StdNo
+Columns: Attributes listed
+
+Loan(LoanNo, ProcDate, DisbMethod, DisbBank, DateAuth, NoteValue, Subsidized, Rate)
+
+Table Name: Loan
+Primary Key: LoanNo
+Columns: Attributes listed
+
+Institution(InstID, InstName, InstMascot)
+
+Table Name: Institution
+Primary Key: InstID
+Columns: Attributes listed
+
+Lender(LenderNo, LendName)
+
+Table Name: Lender
+Primary Key: LenderNo
+Columns: Attributes listed
+
+
+2. For the ERD in Figure 1, you should indicate applications of the 1-M relationship rule. For each 1-M relationship rule application, you should indicate the changes to the tables you listed in problem 1 including foreign key columns and NOT NULL constraints for foreign keys if necessary.
+
+Loan(LoanNo, StdNo, LenderNo, InstID, ProcDate, DisbMethod, DisbBank, DateAuth, NoteValue, Subsidized, Rate)
+
+FOREIGN KEY(StdNo) REFERENCES Student
+FOREIGN KEY(LenderNo) REFERENCES Lender
+FOREIGN KEY(InstID) REFERENCES Institution
+StdNo NOT NULL
+LenderNo NOT NULL
+InstID NOT NULL
+
+
+3. For the ERD in Figure 1, you should indicate applications of the M-N relationship rule. For each M-N relationship rule application, you should list the table name, primary key, and other columns.
+
+There are NONE.
+
+4. For the ERD in Figure 1, you should indicate applications of the identifying relationship rule. For each identifying relationship rule application, you should indicate the changes to the tables you listed in problem 2.
+
+
+DisburseLine(DateSent, LoanNo, Amount, OrigFee, GuarFee)
+
+FOREIGN KEY(LoanNo) REFERENCES Loan
+LoanNo NOT NULL
+Its primary key is a combination of DateSent and LoanNo.
+
+5. Convert the ERD shown in Figure 2 into tables.  List the conversion rules used and table design. For each table, you should list the primary key, foreign keys, other columns, and NOT NULL constraints for foreign keys if necessary. You do not need to write CREATE TABLE statements.
+
+The following table conversion uses the Entity Type Rule and the 1-M Rule.
+
+Account(Acctid, AcctName, Balance, Decomposed)
+
+Primary Key: Acctid
+FOREIGN KEY(Decomposed) REFERENCES Account
+Columns: Attributes listed
+
+
+6. Convert the ERD shown in Figure 3 into tables.  List the conversion rules used and table design. For each table, you should list the primary key, foreign keys, other columns, and NOT NULL constraints for foreign keys if necessary. You do not need to write CREATE TABLE statements.
+
+The following table conversion uses the Entity Type Rule and the M-N Rule.
+
+Owner(OwnId, OwnName, OwnPhone)
+
+Primary Key: OwnId
+
+Property(PropId, BldgName, UnitNo, Bdrms)
+
+Primary Key: PropId
+
+Shares(PropId, OwnId, StartWeek, EndWeek)
+
+Primary Key: PropId and OwnId
+FOREIGN KEY(PropId) REFERENCES Property
+FOREIGN KEY(OwnId) REFERENCES Owner
+Columns: Attributes listed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
